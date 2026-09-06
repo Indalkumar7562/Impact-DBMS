@@ -1,40 +1,51 @@
-1. INNER JOIN
-   
-Q1: Write a query to retrieve the EmployeeName, EmployeeID, and DepartmentName for all employees who belong to a department. Join the Employees table with the Departments table.
-Answer
+## Q1. Retrieve EmployeeName, EmployeeID, and DepartmentName for all employees who belong to a department.
 
-/*SELECT
+### SQL Answer
+
+```sql
+SELECT
     e.EmployeeName,
     e.EmployeeID,
     d.DepartmentName
 FROM Employees e
 INNER JOIN Departments d
-    ON e.DepartmentID = d.DepartmentID;*/
-Example with Solution
+    ON e.DepartmentID = d.DepartmentID;
+```
 
-Input:
+### Example
 
-EmployeeID	EmployeeName	DepartmentID
-101	John Doe	10
-102	Priya Shah	20
-104	Amit Kumar	NULL
+Suppose the `Employees` table contains:
 
-Departments:
+| EmployeeID | EmployeeName | DepartmentID |
+|---|---|---|
+| 1 | Rahul | 10 |
+| 2 | Priya | 20 |
+| 3 | Amit | NULL |
 
-DepartmentID	DepartmentName
-10	Sales
-20	IT
+And the `Departments` table contains:
 
-Solution: John Doe and Priya Shah have matching department IDs. Amit Kumar does not, so he is excluded.
+| DepartmentID | DepartmentName |
+|---|---|
+| 10 | IT |
+| 20 | HR |
 
-Output:
+### Solution
 
-EmployeeName	EmployeeID	DepartmentName
-John Doe	101	Sales
-Priya Shah	102	IT
+The `INNER JOIN` matches employees with departments using `DepartmentID`. Employees without a matching department are not displayed.
 
-Q2: Write a query to find the ProductName, CategoryName, and SupplierName for all products. Join the Products, Categories, and Suppliers tables.
-Answer
+### Output
+
+| EmployeeName | EmployeeID | DepartmentName |
+|---|---|---|
+| Rahul | 1 | IT |
+| Priya | 2 | HR |
+
+
+## Q2. Find ProductName, CategoryName, and SupplierName for all products.
+
+### SQL Answer
+
+```sql
 SELECT
     p.ProductName,
     c.CategoryName,
@@ -44,52 +55,96 @@ INNER JOIN Categories c
     ON p.CategoryID = c.CategoryID
 INNER JOIN Suppliers s
     ON p.SupplierID = s.SupplierID;
-Example with Solution
+```
 
-Input:
+### Example
 
-ProductName	CategoryID	SupplierID
-Laptop	1	1
-Mouse	1	2
-Unknown Product	NULL	NULL
+Suppose the `Products` table contains:
 
-Solution: Only products with matching category and supplier records are included.
+| ProductID | ProductName | CategoryID | SupplierID |
+|---|---|---|---|
+| 1 | Laptop | 10 | 101 |
+| 2 | Keyboard | 20 | 102 |
+| 3 | Mouse | 10 | 101 |
 
-Output:
+And the `Categories` table contains:
 
-ProductName	CategoryName	SupplierName
-Laptop	Electronics	ABC Suppliers
-Mouse	Electronics	XYZ Suppliers
+| CategoryID | CategoryName |
+|---|---|
+| 10 | Electronics |
+| 20 | Accessories |
 
-Q3: Retrieve a list of all orders, along with their customer details (CustomerName, Address, Phone). Join the Orders and Customers tables.
-Answer
+And the `Suppliers` table contains:
+
+| SupplierID | SupplierName |
+|---|---|
+| 101 | Tech World |
+| 102 | Office Supplies |
+
+### Solution
+
+The `INNER JOIN` combines the `Products`, `Categories`, and `Suppliers` tables using their matching IDs. Only products having a matching category and supplier are displayed.
+
+### Output
+
+| ProductName | CategoryName | SupplierName |
+|---|---|---|
+| Laptop | Electronics | Tech World |
+| Keyboard | Accessories | Office Supplies |
+| Mouse | Electronics | Tech World |
+
+
+## Q3. Retrieve all orders with customer details CustomerName, Address, and Phone. Join Orders and Customers.
+
+### SQL Answer
+
+```sql
 SELECT
     o.OrderID,
+    o.OrderDate,
     c.CustomerName,
     c.Address,
     c.Phone
 FROM Orders o
 INNER JOIN Customers c
     ON o.CustomerID = c.CustomerID;
-Example with Solution
+```
 
-Input:
+### Example
 
-OrderID	CustomerID
-1001	1
-1002	2
-1004	99
+Suppose the `Orders` table contains:
 
-Solution: Orders 1001 and 1002 have matching customers. Order 1004 has no matching customer.
+| OrderID | CustomerID | OrderDate |
+|---|---|---|
+| 101 | 1 | 2022-01-05 |
+| 102 | 2 | 2022-01-10 |
+| 103 | 3 | 2022-01-15 |
 
-Output:
+And the `Customers` table contains:
 
-OrderID	CustomerName	Address	Phone
-1001	Rahul	Vadodara	9876543210
-1002	Amit	Ahmedabad	NULL
+| CustomerID | CustomerName | Address | Phone |
+|---|---|---|---|
+| 1 | Rahul | Vadodara | 9876543210 |
+| 2 | Priya | Ahmedabad | 9876501234 |
+| 3 | Amit | Surat | 9876512345 |
 
-Q4: Write a query to find the EmployeeName, Salary, and DepartmentName for all employees who work in the "Sales" department.
-Answer
+### Solution
+
+The `INNER JOIN` combines the `Orders` and `Customers` tables using the matching `CustomerID`. Each order is displayed along with the details of the customer who placed it.
+
+### Output
+
+| OrderID | OrderDate | CustomerName | Address | Phone |
+|---|---|---|---|---|
+| 101 | 2022-01-05 | Rahul | Vadodara | 9876543210 |
+| 102 | 2022-01-10 | Priya | Ahmedabad | 9876501234 |
+| 103 | 2022-01-15 | Amit | Surat | 9876512345 |
+
+## Q4. Find EmployeeName, Salary, and DepartmentName for employees in the Sales department.
+
+### SQL Answer
+
+```sql
 SELECT
     e.EmployeeName,
     e.Salary,
@@ -98,109 +153,168 @@ FROM Employees e
 INNER JOIN Departments d
     ON e.DepartmentID = d.DepartmentID
 WHERE d.DepartmentName = 'Sales';
-Example with Solution
+```
 
-Input:
+### Example
 
-EmployeeName	Salary	DepartmentName
-John Doe	55000	Sales
-Priya Shah	70000	IT
-Rahul Patel	60000	Sales
+Suppose the `Employees` table contains:
 
-Solution: The WHERE clause selects only employees whose department is Sales.
+| EmployeeID | EmployeeName | Salary | DepartmentID |
+|---|---|---:|---|
+| 1 | Rahul | 55000 | 10 |
+| 2 | Priya | 60000 | 20 |
+| 3 | Amit | 50000 | 10 |
 
-Output:
+And the `Departments` table contains:
 
-EmployeeName	Salary	DepartmentName
-John Doe	55000	Sales
-Rahul Patel	60000	Sales
+| DepartmentID | DepartmentName |
+|---|---|
+| 10 | Sales |
+| 20 | IT |
 
-Q5: Write a query to list all products with their suppliers. Display ProductName and SupplierName. Join the Products and Suppliers tables.
-Answer
+### Solution
+
+The `INNER JOIN` combines employees with their departments. The `WHERE` condition displays only employees working in the Sales department.
+
+### Output
+
+| EmployeeName | Salary | DepartmentName |
+|---|---:|---|
+| Rahul | 55000 | Sales |
+| Amit | 50000 | Sales |
+
+---
+
+## Q5. List all products with their suppliers. Display ProductName and SupplierName.
+
+### SQL Answer
+
+```sql
 SELECT
     p.ProductName,
     s.SupplierName
 FROM Products p
 INNER JOIN Suppliers s
     ON p.SupplierID = s.SupplierID;
-Example with Solution
+```
 
-Input:
+### Example
 
-ProductName	SupplierID
-Laptop	1
-Mouse	2
-Chair	1
-Unknown Product	NULL
+Suppose the `Products` table contains:
 
-Solution: Products with matching suppliers are displayed.
+| ProductID | ProductName | SupplierID |
+|---|---|---|
+| 1 | Laptop | 101 |
+| 2 | Keyboard | 102 |
+| 3 | Mouse | 101 |
 
-Output:
+And the `Suppliers` table contains:
 
-ProductName	SupplierName
-Laptop	ABC Suppliers
-Mouse	XYZ Suppliers
-Chair	ABC Suppliers
-2. LEFT JOIN (LEFT OUTER JOIN)
+| SupplierID | SupplierName |
+|---|---|
+| 101 | Tech World |
+| 102 | Office Supplies |
 
-Q6: Write a query to retrieve all products and their categories. If a product is not assigned to any category, display NULL for the category.
-Answer
+### Solution
+
+The `INNER JOIN` matches each product with its supplier using `SupplierID`.
+
+### Output
+
+| ProductName | SupplierName |
+|---|---|
+| Laptop | Tech World |
+| Keyboard | Office Supplies |
+| Mouse | Tech World |
+
+---
+
+## Q6. Retrieve all products and their categories. Display NULL if a product is not assigned to any category.
+
+### SQL Answer
+
+```sql
 SELECT
     p.ProductName,
     c.CategoryName
 FROM Products p
 LEFT JOIN Categories c
     ON p.CategoryID = c.CategoryID;
-Example with Solution
+```
 
-Input:
+### Example
 
-ProductName	CategoryID
-Laptop	1
-Mouse	1
-Chair	2
-Unknown Product	NULL
+Suppose the `Products` table contains:
 
-Solution: All products are included. The product without a category gets NULL.
+| ProductID | ProductName | CategoryID |
+|---|---|---|
+| 1 | Laptop | 10 |
+| 2 | Keyboard | 20 |
+| 3 | Printer | NULL |
 
-Output:
+And the `Categories` table contains:
 
-ProductName	CategoryName
-Laptop	Electronics
-Mouse	Electronics
-Chair	Furniture
-Unknown Product	NULL
+| CategoryID | CategoryName |
+|---|---|
+| 10 | Electronics |
+| 20 | Accessories |
 
-Q7: Write a query to find all employees and their managers. If an employee doesn't have a manager, show NULL for the manager.
-Answer
+### Solution
+
+The `LEFT JOIN` displays all products. If a product does not have a matching category, the category name is shown as `NULL`.
+
+### Output
+
+| ProductName | CategoryName |
+|---|---|
+| Laptop | Electronics |
+| Keyboard | Accessories |
+| Printer | NULL |
+
+---
+
+## Q7. Find all employees and their managers. Display NULL if an employee has no manager.
+
+### SQL Answer
+
+```sql
 SELECT
-    e.EmployeeName AS Employee,
-    m.EmployeeName AS Manager
+    e.EmployeeName AS EmployeeName,
+    m.EmployeeName AS ManagerName
 FROM Employees e
 LEFT JOIN Employees m
     ON e.ManagerID = m.EmployeeID;
-Example with Solution
+```
 
-Input:
+### Example
 
-EmployeeID	EmployeeName	ManagerID
-101	John Doe	NULL
-102	Priya Shah	101
-103	Rahul Patel	101
-104	Amit Kumar	101
+Suppose the `Employees` table contains:
 
-Solution: The same table is joined twice. e represents the employee and m represents the manager.
+| EmployeeID | EmployeeName | ManagerID |
+|---|---|---|
+| 1 | Rahul | NULL |
+| 2 | Priya | 1 |
+| 3 | Amit | 1 |
 
-Output:
+### Solution
 
-Employee	Manager
-John Doe	NULL
-Priya Shah	John Doe
-Rahul Patel	John Doe
-Amit Kumar	John Doe
+The `SELF JOIN` joins the `Employees` table with itself. The `LEFT JOIN` ensures that employees without managers are also displayed.
 
-Q8: Write a query to list all customers and the orders they have placed. Show customers who haven't placed any order (i.e., include NULL for orders).
-Answer
+### Output
+
+| EmployeeName | ManagerName |
+|---|---|
+| Rahul | NULL |
+| Priya | Rahul |
+| Amit | Rahul |
+
+---
+
+## Q8. List all customers and their orders. Include customers who have no orders.
+
+### SQL Answer
+
+```sql
 SELECT
     c.CustomerName,
     o.OrderID,
@@ -208,32 +322,44 @@ SELECT
 FROM Customers c
 LEFT JOIN Orders o
     ON c.CustomerID = o.CustomerID;
-Example with Solution
+```
 
-Input:
+### Example
 
-CustomerID	CustomerName
-1	Rahul
-2	Amit
-3	Priya
+Suppose the `Customers` table contains:
 
-Orders:
+| CustomerID | CustomerName |
+|---|---|
+| 1 | Rahul |
+| 2 | Priya |
+| 3 | Amit |
 
-OrderID	CustomerID
-1001	1
-1002	2
+And the `Orders` table contains:
 
-Solution: Priya has no order, but she is still included because of LEFT JOIN.
+| OrderID | CustomerID | OrderDate |
+|---|---|---|
+| 101 | 1 | 2022-01-05 |
+| 102 | 2 | 2022-01-10 |
 
-Output:
+### Solution
 
-CustomerName	OrderID	OrderDate
-Rahul	1001	2022-02-15
-Amit	1002	2022-03-10
-Priya	NULL	NULL
+The `LEFT JOIN` displays every customer, including customers who have not placed any order.
 
-Q9: Write a query to find all employees along with their department details. Include employees who don't belong to any department (i.e., show NULL for department).
-Answer
+### Output
+
+| CustomerName | OrderID | OrderDate |
+|---|---|---|
+| Rahul | 101 | 2022-01-05 |
+| Priya | 102 | 2022-01-10 |
+| Amit | NULL | NULL |
+
+---
+
+## Q9. Find all employees and department details. Include employees with no department.
+
+### SQL Answer
+
+```sql
 SELECT
     e.EmployeeName,
     e.EmployeeID,
@@ -241,26 +367,44 @@ SELECT
 FROM Employees e
 LEFT JOIN Departments d
     ON e.DepartmentID = d.DepartmentID;
-Example with Solution
+```
 
-Input:
+### Example
 
-EmployeeID	EmployeeName	DepartmentID
-101	John Doe	10
-102	Priya Shah	20
-104	Amit Kumar	NULL
+Suppose the `Employees` table contains:
 
-Solution: Amit Kumar has no department, so his department name is NULL.
+| EmployeeID | EmployeeName | DepartmentID |
+|---|---|---|
+| 1 | Rahul | 10 |
+| 2 | Priya | 20 |
+| 3 | Amit | NULL |
 
-Output:
+And the `Departments` table contains:
 
-EmployeeName	EmployeeID	DepartmentName
-John Doe	101	Sales
-Priya Shah	102	IT
-Amit Kumar	104	NULL
+| DepartmentID | DepartmentName |
+|---|---|
+| 10 | IT |
+| 20 | HR |
 
-Q10: Write a query to display all students and the subjects they are enrolled in. If a student is not enrolled in any subject, show NULL for the subject.
-Answer
+### Solution
+
+The `LEFT JOIN` displays all employees. Employees without a department have `NULL` in the department column.
+
+### Output
+
+| EmployeeName | EmployeeID | DepartmentName |
+|---|---|---|
+| Rahul | 1 | IT |
+| Priya | 2 | HR |
+| Amit | 3 | NULL |
+
+---
+
+## Q10. Display all students and their enrolled subjects. Display NULL if a student has no subject.
+
+### SQL Answer
+
+```sql
 SELECT
     s.StudentName,
     sub.SubjectName
@@ -269,69 +413,101 @@ LEFT JOIN StudentSubjects ss
     ON s.StudentID = ss.StudentID
 LEFT JOIN Subjects sub
     ON ss.SubjectID = sub.SubjectID;
-Example with Solution
+```
 
-Input:
+### Example
 
-StudentID	StudentName
-1	Rahul
-2	Amit
-3	Priya
+Suppose the `Students` table contains:
 
-StudentSubjects:
+| StudentID | StudentName |
+|---|---|
+| 1 | Rahul |
+| 2 | Priya |
+| 3 | Amit |
 
-StudentID	SubjectID
-1	1
-1	2
-3	3
+And the `StudentSubjects` table contains:
 
-Solution: Rahul is enrolled in DBMS and AI. Amit has no enrollment, so NULL is displayed.
+| StudentID | SubjectID |
+|---|---|
+| 1 | 101 |
+| 2 | 102 |
 
-Output:
+And the `Subjects` table contains:
 
-StudentName	SubjectName
-Rahul	DBMS
-Rahul	AI
-Amit	NULL
-Priya	Networking
-3. RIGHT JOIN (RIGHT OUTER JOIN)
+| SubjectID | SubjectName |
+|---|---|
+| 101 | DBMS |
+| 102 | Java |
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+### Solution
 
-Q11: Write a query to list all products and the sales orders they belong to. Include all sales orders, even if no product is associated with the order.
-Answer
+The `LEFT JOIN` displays all students. Students without enrolled subjects are shown with `NULL`.
+
+### Output
+
+| StudentName | SubjectName |
+|---|---|
+| Rahul | DBMS |
+| Priya | Java |
+| Amit | NULL |
+
+---
+
+## Q11. List all products and sales orders. Include all sales orders even if no product is associated.
+
+### SQL Answer
+
+```sql
 SELECT
     p.ProductName,
-    so.SalesOrderID
+    o.OrderID,
+    o.OrderDate
 FROM Products p
-RIGHT JOIN SalesOrders so
-    ON p.ProductID = so.ProductID;
-Example with Solution
+RIGHT JOIN OrderDetails od
+    ON p.ProductID = od.ProductID
+RIGHT JOIN Orders o
+    ON od.OrderID = o.OrderID;
+```
 
-Input:
+### Example
 
-Products
+Suppose the `Orders` table contains:
 
-ProductID	ProductName
-1	Laptop
-2	Mouse
+| OrderID | OrderDate |
+|---|---|
+| 101 | 2022-01-05 |
+| 102 | 2022-01-10 |
 
-SalesOrders
+And the `OrderDetails` table contains:
 
-SalesOrderID	ProductID
-5001	1
-5002	99
+| OrderID | ProductID |
+|---|---|
+| 101 | 1 |
 
-Solution: Sales order 5002 has no matching product, but it is still included because SalesOrders is on the right side.
+And the `Products` table contains:
 
-Output:
+| ProductID | ProductName |
+|---|---|
+| 1 | Laptop |
 
-ProductName	SalesOrderID
-Laptop	5001
-NULL	5002
+### Solution
 
-Q12: Write a query to list all employees and the projects they are assigned to. Include all projects, even if no employees are assigned to them.
-Answer
+The `RIGHT JOIN` ensures that all orders are displayed, even when an order does not have an associated product.
+
+### Output
+
+| ProductName | OrderID | OrderDate |
+|---|---|---|
+| Laptop | 101 | 2022-01-05 |
+| NULL | 102 | 2022-01-10 |
+
+---
+
+## Q12. List all employees and projects. Include all projects even if no employee is assigned.
+
+### SQL Answer
+
+```sql
 SELECT
     e.EmployeeName,
     p.ProjectName
@@ -340,181 +516,227 @@ RIGHT JOIN EmployeeProjects ep
     ON e.EmployeeID = ep.EmployeeID
 RIGHT JOIN Projects p
     ON ep.ProjectID = p.ProjectID;
-Example with Solution
+```
 
-Input:
+### Example
 
-EmployeeProjects
+Suppose the `Projects` table contains:
 
-EmployeeID	ProjectID
-101	P123
-102	P124
+| ProjectID | ProjectName |
+|---|---|
+| 101 | Website |
+| 102 | Mobile App |
 
-Projects
+And the `EmployeeProjects` table contains:
 
-ProjectID	ProjectName
-P123	Scholarship Portal
-P124	AI Recommendation
-P125	Mobile App
+| EmployeeID | ProjectID |
+|---|---|
+| 1 | 101 |
 
-Solution: Project P125 has no employee assigned, but it is included.
+And the `Employees` table contains:
 
-Output:
+| EmployeeID | EmployeeName |
+|---|---|
+| 1 | Rahul |
 
-EmployeeName	ProjectName
-John Doe	Scholarship Portal
-Priya Shah	AI Recommendation
-NULL	Mobile App
+### Solution
 
-Q13: Write a query to retrieve all customers and their orders, including all orders even if no customer is associated with them.
-Answer
+The `RIGHT JOIN` displays all projects, including projects without assigned employees.
+
+### Output
+
+| EmployeeName | ProjectName |
+|---|---|
+| Rahul | Website |
+| NULL | Mobile App |
+
+---
+
+## Q13. Retrieve all customers and orders, including orders with no customer.
+
+### SQL Answer
+
+```sql
 SELECT
     c.CustomerName,
-    o.OrderID
+    o.OrderID,
+    o.OrderDate
 FROM Customers c
 RIGHT JOIN Orders o
     ON c.CustomerID = o.CustomerID;
-Example with Solution
+```
 
-Input:
+### Example
 
-OrderID	CustomerID
-1001	1
-1002	2
-1004	99
+Suppose the `Customers` table contains:
 
-Solution: Order 1004 has no matching customer, but it is included.
+| CustomerID | CustomerName |
+|---|---|
+| 1 | Rahul |
+| 2 | Priya |
 
-Output:
+And the `Orders` table contains:
 
-CustomerName	OrderID
-Rahul	1001
-Amit	1002
-NULL	1004
+| OrderID | CustomerID | OrderDate |
+|---|---|---|
+| 101 | 1 | 2022-01-05 |
+| 102 | 3 | 2022-01-10 |
 
-Q14: Write a query to find all employees and the departments they belong to. Include all departments even if no employees belong to them.
-Answer
+### Solution
+
+The `RIGHT JOIN` displays all orders. If an order has no matching customer, customer details are shown as `NULL`.
+
+### Output
+
+| CustomerName | OrderID | OrderDate |
+|---|---|---|
+| Rahul | 101 | 2022-01-05 |
+| NULL | 102 | 2022-01-10 |
+
+---
+
+## Q14. Find all employees and departments. Include all departments with no employees.
+
+### SQL Answer
+
+```sql
 SELECT
     e.EmployeeName,
     d.DepartmentName
 FROM Employees e
 RIGHT JOIN Departments d
     ON e.DepartmentID = d.DepartmentID;
-Example with Solution
+```
 
-Input:
+### Example
 
-Employees
+Suppose the `Employees` table contains:
 
-EmployeeName	DepartmentID
-John Doe	10
-Priya Shah	20
+| EmployeeID | EmployeeName | DepartmentID |
+|---|---|---|
+| 1 | Rahul | 10 |
+| 2 | Priya | 20 |
 
-Departments
+And the `Departments` table contains:
 
-DepartmentID	DepartmentName
-10	Sales
-20	IT
-30	HR
+| DepartmentID | DepartmentName |
+|---|---|
+| 10 | IT |
+| 20 | HR |
+| 30 | Sales |
 
-Solution: HR has no employees, so it is included with NULL.
+### Solution
 
-Output:
+The `RIGHT JOIN` displays all departments, including departments that do not have employees.
 
-EmployeeName	DepartmentName
-John Doe	Sales
-Priya Shah	IT
-NULL	HR
+### Output
 
-Q15: Write a query to find all sales orders and the products associated with them. If a product is not associated with any order, show the order with NULL for the product.
-Answer
+| EmployeeName | DepartmentName |
+|---|---|
+| Rahul | IT |
+| Priya | HR |
+| NULL | Sales |
+
+---
+
+## Q15. Find all sales orders and associated products. If no product exists, show NULL.
+
+### SQL Answer
+
+```sql
 SELECT
-    so.SalesOrderID,
+    o.OrderID,
     p.ProductName
 FROM Products p
-RIGHT JOIN SalesOrders so
-    ON p.ProductID = so.ProductID;
-Example with Solution
+RIGHT JOIN OrderDetails od
+    ON p.ProductID = od.ProductID
+RIGHT JOIN Orders o
+    ON od.OrderID = o.OrderID;
+```
 
-Input:
+### Example
 
-SalesOrders
+Suppose the `Orders` table contains:
 
-SalesOrderID	ProductID
-5001	1
-5002	NULL
+| OrderID |
+|---|
+| 101 |
+| 102 |
 
-Products
+And the `OrderDetails` table contains:
 
-ProductID	ProductName
-1	Laptop
-2	Mouse
+| OrderID | ProductID |
+|---|---|
+| 101 | 1 |
 
-Solution: Sales order 5002 has no associated product, so ProductName is NULL.
+And the `Products` table contains:
 
-Output:
+| ProductID | ProductName |
+|---|---|
+| 1 | Laptop |
 
-SalesOrderID	ProductName
-5001	Laptop
-5002	NULL
-4. FULL OUTER JOIN
+### Solution
 
-Important: MySQL does not directly support FULL OUTER JOIN. I’ll show the standard SQL answer and the MySQL equivalent where needed.
+The `RIGHT JOIN` displays all sales orders. Orders without matching products display `NULL` for the product name.
 
-Q16: Write a query to list all customers and their orders. Include all customers and all orders, even if a customer hasn't placed any orders or an order is placed by a non-existing customer.
-Answer (Standard SQL)
+### Output
+
+| OrderID | ProductName |
+|---|---|
+| 101 | Laptop |
+| 102 | NULL |
+
+---
+
+## Q16. List all customers and orders, including unmatched customers and orders.
+
+### SQL Answer
+
+```sql
 SELECT
     c.CustomerName,
-    o.OrderID
+    o.OrderID,
+    o.OrderDate
 FROM Customers c
 FULL OUTER JOIN Orders o
     ON c.CustomerID = o.CustomerID;
-MySQL Equivalent
-SELECT
-    c.CustomerName,
-    o.OrderID
-FROM Customers c
-LEFT JOIN Orders o
-    ON c.CustomerID = o.CustomerID
+```
 
-UNION
+### Example
 
-SELECT
-    c.CustomerName,
-    o.OrderID
-FROM Customers c
-RIGHT JOIN Orders o
-    ON c.CustomerID = o.CustomerID;
-Example with Solution
+Suppose the `Customers` table contains:
 
-Input:
+| CustomerID | CustomerName |
+|---|---|
+| 1 | Rahul |
+| 2 | Priya |
 
-Customers
+And the `Orders` table contains:
 
-CustomerID	CustomerName
-1	Rahul
-2	Amit
-3	Priya
+| OrderID | CustomerID | OrderDate |
+|---|---|---|
+| 101 | 1 | 2022-01-05 |
+| 102 | 3 | 2022-01-10 |
 
-Orders
+### Solution
 
-OrderID	CustomerID
-1001	1
-1002	2
-1004	99
+The `FULL OUTER JOIN` displays all customers and all orders. Unmatched records contain `NULL` values.
 
-Solution: Rahul and Amit have orders, Priya has no order, and order 1004 has no matching customer.
+### Output
 
-Output:
+| CustomerName | OrderID | OrderDate |
+|---|---|---|
+| Rahul | 101 | 2022-01-05 |
+| Priya | NULL | NULL |
+| NULL | 102 | 2022-01-10 |
 
-CustomerName	OrderID
-Rahul	1001
-Amit	1002
-Priya	NULL
-NULL	1004
+---
 
-Q17: Write a query to retrieve all employees and all projects. Include all employees and all projects, even if an employee is not assigned to a project or a project has no employees.
-Answer (Standard SQL)
+## Q17. Retrieve all employees and projects, including unmatched employees and projects.
+
+### SQL Answer
+
+```sql
 SELECT
     e.EmployeeName,
     p.ProjectName
@@ -523,42 +745,49 @@ FULL OUTER JOIN EmployeeProjects ep
     ON e.EmployeeID = ep.EmployeeID
 FULL OUTER JOIN Projects p
     ON ep.ProjectID = p.ProjectID;
-Example with Solution
+```
 
-Input:
+### Example
 
-Employees
+Suppose the `Employees` table contains:
 
-EmployeeID	EmployeeName
-101	John Doe
-102	Priya Shah
-103	Rahul Patel
+| EmployeeID | EmployeeName |
+|---|---|
+| 1 | Rahul |
+| 2 | Priya |
 
-EmployeeProjects
+And the `Projects` table contains:
 
-EmployeeID	ProjectID
-101	P123
-102	P124
+| ProjectID | ProjectName |
+|---|---|
+| 101 | Website |
+| 102 | Mobile App |
 
-Projects
+And the `EmployeeProjects` table contains:
 
-ProjectID	ProjectName
-P123	Scholarship Portal
-P124	AI Recommendation
-P125	Mobile App
+| EmployeeID | ProjectID |
+|---|---|
+| 1 | 101 |
 
-Solution: Rahul is not assigned to a project, and P125 has no employees.
+### Solution
 
-Output:
+The `FULL OUTER JOIN` displays employees and projects even when they do not have matching assignment records.
 
-EmployeeName	ProjectName
-John Doe	Scholarship Portal
-Priya Shah	AI Recommendation
-Rahul Patel	NULL
-NULL	Mobile App
+### Output
 
-Q18: Write a query to list all students and all courses. If a student is not enrolled in any course or a course has no students, show NULL for the course or student.
-Answer (Standard SQL)
+| EmployeeName | ProjectName |
+|---|---|
+| Rahul | Website |
+| Priya | NULL |
+| NULL | Mobile App |
+
+---
+
+## Q18. List all students and courses, including unmatched students and courses.
+
+### SQL Answer
+
+```sql
 SELECT
     s.StudentName,
     c.CourseName
@@ -567,80 +796,92 @@ FULL OUTER JOIN StudentCourses sc
     ON s.StudentID = sc.StudentID
 FULL OUTER JOIN Courses c
     ON sc.CourseID = c.CourseID;
-Example with Solution
+```
 
-Input:
+### Example
 
-Students
+Suppose the `Students` table contains:
 
-StudentID	StudentName
-1	Rahul
-2	Amit
-3	Priya
+| StudentID | StudentName |
+|---|---|
+| 1 | Rahul |
+| 2 | Priya |
 
-StudentCourses
+And the `Courses` table contains:
 
-StudentID	CourseID
-1	1
-3	2
+| CourseID | CourseName |
+|---|---|
+| 101 | DBMS |
+| 102 | Java |
 
-Courses
+And the `StudentCourses` table contains:
 
-CourseID	CourseName
-1	DBMS
-2	AI
-3	Cloud Computing
+| StudentID | CourseID |
+|---|---|
+| 1 | 101 |
 
-Solution: Amit is not enrolled in any course, and Cloud Computing has no students.
+### Solution
 
-Output:
+The `FULL OUTER JOIN` displays all students and courses, including those without matching enrollment records.
 
-StudentName	CourseName
-Rahul	DBMS
-Amit	NULL
-Priya	AI
-NULL	Cloud Computing
+### Output
 
-Q19: Write a query to find all suppliers and products. Include all suppliers and all products, even if a supplier has no products or a product has no suppliers.
-Answer (Standard SQL)
+| StudentName | CourseName |
+|---|---|
+| Rahul | DBMS |
+| Priya | NULL |
+| NULL | Java |
+
+---
+
+## Q19. Find all suppliers and products, including unmatched suppliers and products.
+
+### SQL Answer
+
+```sql
 SELECT
     s.SupplierName,
     p.ProductName
 FROM Suppliers s
 FULL OUTER JOIN Products p
     ON s.SupplierID = p.SupplierID;
-Example with Solution
+```
 
-Input:
+### Example
 
-Suppliers
+Suppose the `Suppliers` table contains:
 
-SupplierID	SupplierName
-1	ABC Suppliers
-2	XYZ Suppliers
-3	PQR Suppliers
+| SupplierID | SupplierName |
+|---|---|
+| 101 | Tech World |
+| 102 | Office Supplies |
 
-Products
+And the `Products` table contains:
 
-ProductID	ProductName	SupplierID
-1	Laptop	1
-2	Mouse	2
-3	Chair	1
-4	Unknown Product	NULL
+| ProductID | ProductName | SupplierID |
+|---|---|---|
+| 1 | Laptop | 101 |
+| 2 | Printer | 103 |
 
-Solution: PQR Suppliers has no products, and Unknown Product has no supplier.
+### Solution
 
-Output:
+The `FULL OUTER JOIN` displays all suppliers and products. Unmatched suppliers or products contain `NULL` values.
 
-SupplierName	ProductName
-ABC Suppliers	Laptop
-ABC Suppliers	Chair
-XYZ Suppliers	Mouse
-PQR Suppliers	NULL
-NULL	Unknown Product
+### Output
 
-Q20: Write a query to list all orders and products. Include all orders and products, even if there are orders without products or products not ordered by anyone.
-Answer (Standard SQL)
+| SupplierName | ProductName |
+|---|---|
+| Tech World | Laptop |
+| Office Supplies | NULL |
+| NULL | Printer |
+
+---
+
+## Q20. List all orders and products, including orders without products and products never ordered.
+
+### SQL Answer
+
+```sql
 SELECT
     o.OrderID,
     p.ProductName
@@ -649,47 +890,49 @@ FULL OUTER JOIN OrderDetails od
     ON o.OrderID = od.OrderID
 FULL OUTER JOIN Products p
     ON od.ProductID = p.ProductID;
-Example with Solution
+```
 
-Input:
+### Example
 
-Orders
+Suppose the `Orders` table contains:
 
-OrderID
-1001
-1002
-1003
+| OrderID |
+|---|
+| 101 |
+| 102 |
 
-OrderDetails
+And the `OrderDetails` table contains:
 
-OrderID	ProductID
-1001	1
-1002	3
-1003	2
+| OrderID | ProductID |
+|---|---|
+| 101 | 1 |
 
-Products
+And the `Products` table contains:
 
-ProductID	ProductName
-1	Laptop
-2	Mouse
-3	Chair
-4	Unknown Product
+| ProductID | ProductName |
+|---|---|
+| 1 | Laptop |
+| 2 | Printer |
 
-Solution: Unknown Product has never been ordered, so it appears with NULL for OrderID.
+### Solution
 
-Output:
+The `FULL OUTER JOIN` displays all orders and all products, including orders without products and products that were never ordered.
 
-OrderID	ProductName
-1001	Laptop
-1002	Chair
-1003	Mouse
-NULL	Unknown Product
-5. SELF JOIN
+### Output
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| OrderID | ProductName |
+|---|---|
+| 101 | Laptop |
+| 102 | NULL |
+| NULL | Printer |
 
-Q21: Write a query to find employees who work in the same department as "John Doe". Use the Employees table and join it with itself.
-Answer
+---
+
+## Q21. Find employees who work in the same department as John Doe.
+
+### SQL Answer
+
+```sql
 SELECT
     e.EmployeeName,
     e.DepartmentID
@@ -698,51 +941,72 @@ INNER JOIN Employees j
     ON e.DepartmentID = j.DepartmentID
 WHERE j.EmployeeName = 'John Doe'
   AND e.EmployeeName <> 'John Doe';
-Example with Solution
+```
 
-Input:
+### Example
 
-EmployeeName	DepartmentID
-John Doe	10
-Priya Shah	20
-Rahul Patel	10
-Amit Kumar	NULL
+Suppose the `Employees` table contains:
 
-Solution: John Doe works in department 10. Rahul Patel also works in department 10, so he is included.
+| EmployeeID | EmployeeName | DepartmentID |
+|---|---|---|
+| 1 | John Doe | 10 |
+| 2 | Rahul | 10 |
+| 3 | Priya | 20 |
 
-Output:
+### Solution
 
-EmployeeName	DepartmentID
-Rahul Patel	10
+The `SELF JOIN` joins the `Employees` table with itself. The query finds employees whose department is the same as John Doe's department.
 
-Q22: Write a query to list all employees and their managers. Use a self-join on the Employees table where the manager is an employee from the same table.
-Answer
+### Output
+
+| EmployeeName | DepartmentID |
+|---|---|
+| Rahul | 10 |
+
+---
+
+## Q22. List all employees and their managers using a self-join.
+
+### SQL Answer
+
+```sql
 SELECT
-    e.EmployeeName AS Employee,
-    m.EmployeeName AS Manager
+    e.EmployeeName AS EmployeeName,
+    m.EmployeeName AS ManagerName
 FROM Employees e
 LEFT JOIN Employees m
     ON e.ManagerID = m.EmployeeID;
-Example with Solution
+```
 
-Input:
+### Example
 
-EmployeeID	EmployeeName	ManagerID
-101	John Doe	NULL
-102	Priya Shah	101
-103	Rahul Patel	101
+Suppose the `Employees` table contains:
 
-Solution: John Doe has no manager. Priya Shah and Rahul Patel report to John Doe.
+| EmployeeID | EmployeeName | ManagerID |
+|---|---|---|
+| 1 | Rahul | NULL |
+| 2 | Priya | 1 |
+| 3 | Amit | 1 |
 
-Output:
+### Solution
 
-Employee	Manager
-John Doe	NULL
-Priya Shah	John Doe
-Rahul Patel	John Doe
+The `SELF JOIN` uses the same `Employees` table twice. One alias represents the employee and the other represents the manager.
 
-Q23: Write a query to find all employees who share the same department and have the same job title. Use the Employees table with a self-join.
-Answer
+### Output
+
+| EmployeeName | ManagerName |
+|---|---|
+| Rahul | NULL |
+| Priya | Rahul |
+| Amit | Rahul |
+
+---
+
+## Q23. Find employees with the same department and job title.
+
+### SQL Answer
+
+```sql
 SELECT
     e1.EmployeeName AS Employee1,
     e2.EmployeeName AS Employee2,
@@ -753,25 +1017,35 @@ INNER JOIN Employees e2
     ON e1.DepartmentID = e2.DepartmentID
    AND e1.JobTitle = e2.JobTitle
    AND e1.EmployeeID < e2.EmployeeID;
-Example with Solution
+```
 
-Input:
+### Example
 
-EmployeeID	EmployeeName	DepartmentID	JobTitle
-101	John Doe	10	Manager
-102	Priya Shah	20	Developer
-103	Rahul Patel	10	Developer
-104	Amit Kumar	10	Developer
+Suppose the `Employees` table contains:
 
-Solution: Rahul Patel and Amit Kumar have the same department and job title.
+| EmployeeID | EmployeeName | DepartmentID | JobTitle |
+|---|---|---|---|
+| 1 | Rahul | 10 | Developer |
+| 2 | Priya | 10 | Developer |
+| 3 | Amit | 20 | Tester |
 
-Output:
+### Solution
 
-Employee1	Employee2	DepartmentID	JobTitle
-Rahul Patel	Amit Kumar	10	Developer
+The `SELF JOIN` compares employees with other employees. The condition `e1.EmployeeID < e2.EmployeeID` avoids duplicate pairs.
 
-Q24: Write a query to find all employees who report directly to the same manager. Join the Employees table with itself to find employees under the same manager.
-Answer
+### Output
+
+| Employee1 | Employee2 | DepartmentID | JobTitle |
+|---|---|---|---|
+| Rahul | Priya | 10 | Developer |
+
+---
+
+## Q24. Find employees reporting directly to the same manager.
+
+### SQL Answer
+
+```sql
 SELECT
     e1.EmployeeName AS Employee1,
     e2.EmployeeName AS Employee2,
@@ -781,27 +1055,36 @@ INNER JOIN Employees e2
     ON e1.ManagerID = e2.ManagerID
    AND e1.EmployeeID < e2.EmployeeID
 WHERE e1.ManagerID IS NOT NULL;
-Example with Solution
+```
 
-Input:
+### Example
 
-EmployeeID	EmployeeName	ManagerID
-101	John Doe	NULL
-102	Priya Shah	101
-103	Rahul Patel	101
-104	Amit Kumar	101
+Suppose the `Employees` table contains:
 
-Solution: Priya Shah, Rahul Patel, and Amit Kumar all report to John Doe.
+| EmployeeID | EmployeeName | ManagerID |
+|---|---|---|
+| 1 | Rahul | NULL |
+| 2 | Priya | 1 |
+| 3 | Amit | 1 |
+| 4 | Neha | 2 |
 
-Output:
+### Solution
 
-Employee1	Employee2	ManagerID
-Priya Shah	Rahul Patel	101
-Priya Shah	Amit Kumar	101
-Rahul Patel	Amit Kumar	101
+The query compares employees who have the same `ManagerID`. It returns pairs of employees reporting to the same manager.
 
-Q25: Write a query to list all products that belong to the same category and have the same supplier. Join the Products table with itself on CategoryID and SupplierID.
-Answer
+### Output
+
+| Employee1 | Employee2 | ManagerID |
+|---|---|---|
+| Priya | Amit | 1 |
+
+---
+
+## Q25. Find products with the same category and supplier.
+
+### SQL Answer
+
+```sql
 SELECT
     p1.ProductName AS Product1,
     p2.ProductName AS Product2,
@@ -812,54 +1095,81 @@ INNER JOIN Products p2
     ON p1.CategoryID = p2.CategoryID
    AND p1.SupplierID = p2.SupplierID
    AND p1.ProductID < p2.ProductID;
-Example with Solution
+```
 
-Input:
+### Example
 
-ProductID	ProductName	CategoryID	SupplierID
-1	Laptop	1	1
-2	Mouse	1	2
-3	Chair	2	1
-4	Keyboard	1	1
+Suppose the `Products` table contains:
 
-Solution: Laptop and Keyboard have the same category and supplier.
+| ProductID | ProductName | CategoryID | SupplierID |
+|---|---|---|---|
+| 1 | Laptop | 10 | 101 |
+| 2 | Mouse | 10 | 101 |
+| 3 | Printer | 20 | 102 |
 
-Output:
+### Solution
 
-Product1	Product2	CategoryID	SupplierID
-Laptop	Keyboard	1	1
-6. JOIN with WHERE Clause
+The `SELF JOIN` compares products with the same category and supplier. The condition `p1.ProductID < p2.ProductID` prevents duplicate results.
 
-Q26: Write a query to list all orders that were placed after January 1st, 2022. Join the Orders and Customers tables and filter by OrderDate.
-Answer
+### Output
+
+| Product1 | Product2 | CategoryID | SupplierID |
+|---|---|---|---|
+| Laptop | Mouse | 10 | 101 |
+
+---
+
+## Q26. List orders placed after January 1, 2022, along with customer details.
+
+### SQL Answer
+
+```sql
 SELECT
     o.OrderID,
-    c.CustomerName,
-    o.OrderDate
+    o.OrderDate,
+    c.CustomerName
 FROM Orders o
 INNER JOIN Customers c
     ON o.CustomerID = c.CustomerID
 WHERE o.OrderDate > '2022-01-01';
-Example with Solution
+```
 
-Input:
+### Example
 
-OrderID	CustomerID	OrderDate
-1001	1	2022-02-15
-1002	2	2022-03-10
-1003	1	2022-04-20
+Suppose the `Orders` table contains:
 
-Solution: All three orders were placed after January 1, 2022, and have matching customers.
+| OrderID | CustomerID | OrderDate |
+|---|---|---|
+| 101 | 1 | 2021-12-25 |
+| 102 | 2 | 2022-01-10 |
+| 103 | 3 | 2022-02-15 |
 
-Output:
+And the `Customers` table contains:
 
-OrderID	CustomerName	OrderDate
-1001	Rahul	2022-02-15
-1002	Amit	2022-03-10
-1003	Rahul	2022-04-20
+| CustomerID | CustomerName |
+|---|---|
+| 1 | Rahul |
+| 2 | Priya |
+| 3 | Amit |
 
-Q27: Write a query to find all employees whose salary is greater than $50,000 and who belong to the "Sales" department. Join the Employees and Departments tables.
-Answer
+### Solution
+
+The `INNER JOIN` combines orders with customers. The `WHERE` condition displays only orders placed after January 1, 2022.
+
+### Output
+
+| OrderID | OrderDate | CustomerName |
+|---|---|---|
+| 102 | 2022-01-10 | Priya |
+| 103 | 2022-02-15 | Amit |
+
+---
+
+## Q27. Find employees with a salary greater than 50,000 in the Sales department.
+
+### SQL Answer
+
+```sql
 SELECT
     e.EmployeeName,
     e.Salary,
@@ -869,68 +1179,81 @@ INNER JOIN Departments d
     ON e.DepartmentID = d.DepartmentID
 WHERE e.Salary > 50000
   AND d.DepartmentName = 'Sales';
-Example with Solution
+```
 
-Input:
+### Example
 
-EmployeeName	Salary	DepartmentName
-John Doe	55000	Sales
-Rahul Patel	60000	Sales
-Priya Shah	70000	IT
-Amit Kumar	45000	NULL
+Suppose the `Employees` table contains:
 
-Solution: John Doe and Rahul Patel satisfy both conditions.
+| EmployeeID | EmployeeName | Salary | DepartmentID |
+|---|---|---:|---|
+| 1 | Rahul | 60000 | 10 |
+| 2 | Priya | 45000 | 10 |
+| 3 | Amit | 70000 | 20 |
 
-Output:
+And the `Departments` table contains:
 
-EmployeeName	Salary	DepartmentName
-John Doe	55000	Sales
-Rahul Patel	60000	Sales
+| DepartmentID | DepartmentName |
+|---|---|
+| 10 | Sales |
+| 20 | IT |
 
-Q28: Write a query to list all customers who have placed orders worth more than $200. Use the Customers, Orders, and OrderDetails tables.
-Answer
+### Solution
+
+The query joins employees with departments and filters employees whose salary is greater than 50,000 and whose department is Sales.
+
+### Output
+
+| EmployeeName | Salary | DepartmentName |
+|---|---:|---|
+| Rahul | 60000 | Sales |
+
+---
+
+## Q28. List customers with orders worth more than 200.
+
+### SQL Answer
+
+```sql
 SELECT DISTINCT
-    c.CustomerID,
-    c.CustomerName
+    c.CustomerName,
+    o.OrderID
 FROM Customers c
 INNER JOIN Orders o
     ON c.CustomerID = o.CustomerID
 INNER JOIN OrderDetails od
     ON o.OrderID = od.OrderID
-GROUP BY
-    c.CustomerID,
-    c.CustomerName,
-    o.OrderID
-HAVING SUM(od.Quantity * od.UnitPrice) > 200;
-Example with Solution
+WHERE od.Quantity * od.UnitPrice > 200;
+```
 
-Input:
+### Example
 
-OrderID	CustomerID
-1001	1
-1002	2
-1003	1
+Suppose the `OrderDetails` table contains:
 
-OrderDetails:
+| OrderID | ProductID | Quantity | UnitPrice |
+|---|---|---:|---:|
+| 101 | 1 | 2 | 150 |
+| 102 | 2 | 1 | 100 |
 
-OrderID	Quantity	UnitPrice
-1001	2	150
-1002	1	100
-1003	1	50
+And the related customer is Rahul for order 101 and Priya for order 102.
 
-Solution:
+### Solution
 
-Order 1001 = 2 × 150 = 300 → Greater than 200
-Order 1002 = 1 × 100 = 100 → Not greater than 200
-Order 1003 = 1 × 50 = 50 → Not greater than 200
+The query joins customers, orders, and order details. It calculates the order value using `Quantity * UnitPrice` and displays orders worth more than 200.
 
-Output:
+### Output
 
-CustomerID	CustomerName
-1	Rahul
+| CustomerName | OrderID |
+|---|---|
+| Rahul | 101 |
 
-Q29: Write a query to find all employees who work in the "IT" department and have a salary greater than $60,000. Join the Employees and Departments tables and filter the results accordingly.
-Answer
+---
+
+## Q29. Find IT employees with a salary greater than 60,000.
+
+### SQL Answer
+
+```sql
 SELECT
     e.EmployeeName,
     e.Salary,
@@ -940,282 +1263,321 @@ INNER JOIN Departments d
     ON e.DepartmentID = d.DepartmentID
 WHERE d.DepartmentName = 'IT'
   AND e.Salary > 60000;
-Example with Solution
+```
 
-Input:
+### Example
 
-EmployeeName	Salary	DepartmentName
-Priya Shah	70000	IT
-Rahul Patel	60000	Sales
-John Doe	55000	Sales
+Suppose the `Employees` table contains:
 
-Solution: Priya Shah is in IT and earns more than 60,000.
+| EmployeeID | EmployeeName | Salary | DepartmentID |
+|---|---|---:|---|
+| 1 | Rahul | 65000 | 20 |
+| 2 | Priya | 55000 | 20 |
+| 3 | Amit | 70000 | 10 |
 
-Output:
+And the `Departments` table contains:
 
-EmployeeName	Salary	DepartmentName
-Priya Shah	70000	IT
+| DepartmentID | DepartmentName |
+|---|---|
+| 10 | Sales |
+| 20 | IT |
 
-Q30: Write a query to retrieve the name and address of all employees who are assigned to project "P123". Use the Employees and Projects tables.
-Answer
+### Solution
+
+The query displays employees belonging to the IT department whose salary is greater than 60,000.
+
+### Output
+
+| EmployeeName | Salary | DepartmentName |
+|---|---:|---|
+| Rahul | 65000 | IT |
+
+---
+
+## Q30. Retrieve the name and address of employees assigned to project P123.
+
+### SQL Answer
+
+```sql
 SELECT
     e.EmployeeName,
-    e.Address
+    e.Address,
+    p.ProjectName
 FROM Employees e
 INNER JOIN EmployeeProjects ep
     ON e.EmployeeID = ep.EmployeeID
 INNER JOIN Projects p
     ON ep.ProjectID = p.ProjectID
 WHERE p.ProjectID = 'P123';
-Example with Solution
+```
 
-Input:
+### Example
 
-EmployeeProjects
+Suppose the `Employees` table contains:
 
-EmployeeID	ProjectID
-101	P123
-102	P124
+| EmployeeID | EmployeeName | Address |
+|---|---|---|
+| 1 | Rahul | Vadodara |
+| 2 | Priya | Ahmedabad |
 
-Projects
+And the `Projects` table contains:
 
-ProjectID	ProjectName
-P123	Scholarship Portal
-P124	AI Recommendation
+| ProjectID | ProjectName |
+|---|---|
+| P123 | Website Development |
+| P124 | Mobile Application |
 
-Solution: John Doe is assigned to P123.
+And the `EmployeeProjects` table contains:
 
-Output:
+| EmployeeID | ProjectID |
+|---|---|
+| 1 | P123 |
+| 2 | P124 |
 
-EmployeeName	Address
-John Doe	Vadodara
-7. JOIN with GROUP BY
+### Solution
 
-Q31: Write a query to find the total number of orders for each customer. Group the results by customer.
-Answer
+The query joins employees with project assignments and projects. The `WHERE` condition returns only employees assigned to project P123.
+
+### Output
+
+| EmployeeName | Address | ProjectName |
+|---|---|---|
+| Rahul | Vadodara | Website Development |
+
+---
+
+## Q31. Find the total number of orders for each customer.
+
+### SQL Answer
+
+```sql
 SELECT
     c.CustomerName,
     COUNT(o.OrderID) AS TotalOrders
 FROM Customers c
 LEFT JOIN Orders o
     ON c.CustomerID = o.CustomerID
-GROUP BY c.CustomerID, c.CustomerName;
-Example with Solution
+GROUP BY
+    c.CustomerName;
+```
 
-Input:
+### Example
 
-CustomerName	OrderID
-Rahul	1001
-Rahul	1003
-Amit	1002
-Priya	NULL
+Suppose Rahul has 2 orders, Priya has 1 order, and Amit has no orders.
 
-Solution:
+### Solution
 
-Rahul has 2 orders
-Amit has 1 order
-Priya has 0 orders
+The `LEFT JOIN` includes all customers. The `COUNT()` function counts the number of orders for each customer, and `GROUP BY` groups the results by customer.
 
-Output:
+### Output
 
-CustomerName	TotalOrders
-Rahul	2
-Amit	1
-Priya	0
+| CustomerName | TotalOrders |
+|---|---:|
+| Rahul | 2 |
+| Priya | 1 |
+| Amit | 0 |
 
-Q32: Write a query to calculate the average salary for each department. Group the results by department name.
-Answer
+---
+
+## Q32. Find the average salary for each department.
+
+### SQL Answer
+
+```sql
 SELECT
     d.DepartmentName,
     AVG(e.Salary) AS AverageSalary
 FROM Departments d
 INNER JOIN Employees e
     ON d.DepartmentID = e.DepartmentID
-GROUP BY d.DepartmentID, d.DepartmentName;
-Example with Solution
+GROUP BY
+    d.DepartmentName;
+```
 
-Input:
+### Example
 
-DepartmentName	Salary
-Sales	55000
-Sales	60000
-IT	70000
+Suppose the Sales department has salaries of 50,000 and 60,000, while the IT department has salaries of 70,000 and 80,000.
 
-Solution:
+### Solution
 
-Sales average = (55000 + 60000) / 2 = 57500
-IT average = 70000 / 1 = 70000
+The `AVG()` function calculates the average salary for each department. The `GROUP BY` clause groups employees according to their departments.
 
-Output:
+### Output
 
-DepartmentName	AverageSalary
-Sales	57500
-IT	70000
+| DepartmentName | AverageSalary |
+|---|---:|
+| Sales | 55000 |
+| IT | 75000 |
 
-Q33: Write a query to find the total sales per product. Use the OrderDetails and Products tables and group the results by ProductID.
-Answer
+---
+
+## Q33. Find total sales for each product.
+
+### SQL Answer
+
+```sql
 SELECT
-    p.ProductID,
     p.ProductName,
     SUM(od.Quantity * od.UnitPrice) AS TotalSales
 FROM Products p
 INNER JOIN OrderDetails od
     ON p.ProductID = od.ProductID
-GROUP BY p.ProductID, p.ProductName;
-Example with Solution
+GROUP BY
+    p.ProductName;
+```
 
-Input:
+### Example
 
-ProductID	ProductName	Quantity	UnitPrice
-1	Laptop	2	75000
-2	Mouse	1	500
-2	Mouse	2	500
+Suppose Laptop was sold 2 times at 500 each and Mouse was sold 3 times at 100 each.
 
-Solution:
+### Solution
 
-Laptop = 2 × 75000 = 150000
-Mouse = (1 × 500) + (2 × 500) = 1500
+The query calculates sales using `Quantity * UnitPrice`. The `SUM()` function calculates the total sales for each product.
 
-Output:
+### Output
 
-ProductID	ProductName	TotalSales
-1	Laptop	150000
-2	Mouse	1500
+| ProductName | TotalSales |
+|---|---:|
+| Laptop | 1000 |
+| Mouse | 300 |
 
-Q34: Write a query to find the total number of employees in each department. Group the results by department name.
-Answer
+---
+
+## Q34. Find the total number of employees in each department.
+
+### SQL Answer
+
+```sql
 SELECT
     d.DepartmentName,
     COUNT(e.EmployeeID) AS TotalEmployees
 FROM Departments d
 LEFT JOIN Employees e
     ON d.DepartmentID = e.DepartmentID
-GROUP BY d.DepartmentID, d.DepartmentName;
-Example with Solution
+GROUP BY
+    d.DepartmentName;
+```
 
-Input:
+### Example
 
-DepartmentName	EmployeeName
-Sales	John Doe
-Sales	Rahul Patel
-IT	Priya Shah
-HR	NULL
+Suppose Sales has 3 employees, IT has 2 employees, and HR has no employees.
 
-Solution: Sales has 2 employees, IT has 1, and HR has 0.
+### Solution
 
-Output:
+The `LEFT JOIN` includes departments with no employees. The `COUNT()` function counts employees in each department.
 
-DepartmentName	TotalEmployees
-Sales	2
-IT	1
-HR	0
+### Output
 
-Q35: Write a query to calculate the average order amount for each customer. Group the results by customer.
-Answer
+| DepartmentName | TotalEmployees |
+|---|---:|
+| Sales | 3 |
+| IT | 2 |
+| HR | 0 |
+
+---
+
+## Q35. Find the average order amount for each customer.
+
+### SQL Answer
+
+```sql
 SELECT
     c.CustomerName,
-    AVG(order_totals.OrderAmount) AS AverageOrderAmount
+    AVG(od.Quantity * od.UnitPrice) AS AverageOrderAmount
 FROM Customers c
-INNER JOIN (
-    SELECT
-        o.OrderID,
-        o.CustomerID,
-        SUM(od.Quantity * od.UnitPrice) AS OrderAmount
-    FROM Orders o
-    INNER JOIN OrderDetails od
-        ON o.OrderID = od.OrderID
-    GROUP BY o.OrderID, o.CustomerID
-) AS order_totals
-    ON c.CustomerID = order_totals.CustomerID
-GROUP BY c.CustomerID, c.CustomerName;
-Example with Solution
+INNER JOIN Orders o
+    ON c.CustomerID = o.CustomerID
+INNER JOIN OrderDetails od
+    ON o.OrderID = od.OrderID
+GROUP BY
+    c.CustomerName;
+```
 
-Input:
+### Example
 
-CustomerID	CustomerName
-1	Rahul
-2	Amit
+Suppose Rahul placed two orders worth 100 and 300.
 
-Order totals:
+### Solution
 
-OrderID	CustomerID	OrderAmount
-1001	1	300
-1003	1	100
-1002	2	500
+The query calculates the amount of each order using `Quantity * UnitPrice`. The `AVG()` function calculates the average order amount for each customer.
 
-Solution:
+### Output
 
-Rahul average = (300 + 100) / 2 = 200
-Amit average = 500 / 1 = 500
+| CustomerName | AverageOrderAmount |
+|---|---:|
+| Rahul | 200 |
 
-Output:
+---
 
-CustomerName	AverageOrderAmount
-Rahul	200
-Amit	500
-8. JOIN with Aggregate Functions
+## Q36. Find the highest-priced product in each category.
 
-Q36: Write a query to find the highest priced product in each category. Join the Products and Categories tables and use the MAX function.
-Answer
+### SQL Answer
+
+```sql
 SELECT
     c.CategoryName,
     MAX(p.Price) AS HighestPrice
 FROM Categories c
 INNER JOIN Products p
     ON c.CategoryID = p.CategoryID
-GROUP BY c.CategoryID, c.CategoryName;
-Example with Solution
+GROUP BY
+    c.CategoryName;
+```
 
-Input:
+### Example
 
-ProductName	CategoryID	Price
-Laptop	1	75000
-Mouse	1	500
-Chair	2	5000
+Suppose Electronics contains products priced at 500 and 800, while Accessories contains products priced at 100 and 200.
 
-Solution:
+### Solution
 
-Electronics → Highest price = 75000
-Furniture → Highest price = 5000
+The `MAX()` function finds the highest product price in each category. The `GROUP BY` clause groups products by category.
 
-Output:
+### Output
 
-CategoryName	HighestPrice
-Electronics	75000
-Furniture	5000
+| CategoryName | HighestPrice |
+|---|---:|
+| Electronics | 800 |
+| Accessories | 200 |
 
-Q37: Write a query to find the total sales for each product. Join the Products and OrderDetails tables and calculate the total revenue for each product.
-Answer
+---
+
+## Q37. Find the total sales revenue for each product.
+
+### SQL Answer
+
+```sql
 SELECT
     p.ProductName,
     SUM(od.Quantity * od.UnitPrice) AS TotalRevenue
 FROM Products p
 INNER JOIN OrderDetails od
     ON p.ProductID = od.ProductID
-GROUP BY p.ProductID, p.ProductName;
-Example with Solution
+GROUP BY
+    p.ProductName;
+```
 
-Input:
+### Example
 
-ProductName	Quantity	UnitPrice
-Laptop	2	75000
-Mouse	1	500
-Mouse	2	500
+Suppose Laptop was sold 2 times at 500 each and Keyboard was sold 3 times at 100 each.
 
-Solution:
+### Solution
 
-Laptop = 2 × 75000 = 150000
-Mouse = 1 × 500 + 2 × 500 = 1500
+The query multiplies quantity by unit price for every sale. The `SUM()` function calculates the total revenue for each product.
 
-Output:
+### Output
 
-ProductName	TotalRevenue
-Laptop	150000
-Mouse	1500
+| ProductName | TotalRevenue |
+|---|---:|
+| Laptop | 1000 |
+| Keyboard | 300 |
 
+---
 
-Q38: Write a query to find the minimum, maximum, and average price of products in each category. Use the Products and Categories tables and apply aggregate functions.
-Answer
+## Q38. Find the minimum, maximum, and average product price for each category.
+
+### SQL Answer
+
+```sql
 SELECT
     c.CategoryName,
     MIN(p.Price) AS MinimumPrice,
@@ -1224,102 +1586,94 @@ SELECT
 FROM Categories c
 INNER JOIN Products p
     ON c.CategoryID = p.CategoryID
-GROUP BY c.CategoryID, c.CategoryName;
-Example with Solution
+GROUP BY
+    c.CategoryName;
+```
 
-Input:
+### Example
 
-ProductName	CategoryID	Price
-Laptop	1	75000
-Mouse	1	500
-Chair	2	5000
+Suppose Electronics products have prices of 500, 800, and 700.
 
-Solution:
+### Solution
 
-Electronics:
+The `MIN()`, `MAX()`, and `AVG()` functions calculate the minimum, maximum, and average prices for each category.
 
-Minimum = 500
-Maximum = 75000
-Average = (75000 + 500) / 2 = 37750
+### Output
 
-Furniture:
+| CategoryName | MinimumPrice | MaximumPrice | AveragePrice |
+|---|---:|---:|---:|
+| Electronics | 500 | 800 | 666.67 |
 
-Minimum = 5000
-Maximum = 5000
-Average = 5000
+---
 
-Output:
+## Q39. Find the total number of employees in each department using COUNT.
 
-CategoryName	MinimumPrice	MaximumPrice	AveragePrice
-Electronics	500	75000	37750
-Furniture	5000	5000	5000
+### SQL Answer
 
-Q39: Write a query to find the total number of employees in each department. Use the Employees and Departments tables and apply the COUNT function.
-Answer
+```sql
 SELECT
     d.DepartmentName,
     COUNT(e.EmployeeID) AS TotalEmployees
 FROM Departments d
 LEFT JOIN Employees e
     ON d.DepartmentID = e.DepartmentID
-GROUP BY d.DepartmentID, d.DepartmentName;
-Example with Solution
+GROUP BY
+    d.DepartmentName;
+```
 
-Input:
+### Example
 
-DepartmentName	EmployeeID
-Sales	101
-Sales	103
-IT	102
-HR	NULL
+Suppose the Sales department has 3 employees and the IT department has 2 employees.
 
-Solution:
+### Solution
 
-Sales = 2 employees
-IT = 1 employee
-HR = 0 employees
+The `COUNT()` function counts employees in each department. The `LEFT JOIN` also displays departments that have no employees.
 
-Output:
+### Output
 
-DepartmentName	TotalEmployees
-Sales	2
-IT	1
-HR	0
+| DepartmentName | TotalEmployees |
+|---|---:|
+| Sales | 3 |
+| IT | 2 |
 
-Q40: Write a query to calculate the total amount of money spent on each order. Join the Orders and OrderDetails tables and use the SUM function.
-Answer
+---
+
+## Q40. Find the total money spent on each order.
+
+### SQL Answer
+
+```sql
 SELECT
     o.OrderID,
     SUM(od.Quantity * od.UnitPrice) AS TotalOrderAmount
 FROM Orders o
 INNER JOIN OrderDetails od
     ON o.OrderID = od.OrderID
-GROUP BY o.OrderID;
-Example with Solution
+GROUP BY
+    o.OrderID;
+```
 
-Input:
+### Example
 
-OrderID	Quantity	UnitPrice
-1001	2	75000
-1001	1	500
-1002	1	5000
+Suppose order 101 contains 2 laptops priced at 500 each and 1 mouse priced at 100.
 
-Solution:
+### Solution
 
-Order 1001 = (2 × 75000) + (1 × 500) = 150500
-Order 1002 = 1 × 5000 = 5000
+The query calculates the total amount of each order by multiplying quantity by unit price and then applying the `SUM()` function.
 
-Output:
+### Output
 
-OrderID	TotalOrderAmount
-1001	150500
-1002	5000
-9. JOIN with NULL Handling
+| OrderID | TotalOrderAmount |
+|---|---:|
+| 101 | 1100 |
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---
 
-Q41: Write a query to find all students and the subjects they are enrolled in. If a student is not enrolled in any subject, show NULL for the subject.
-Answer
+## Q41. Display all students and subjects. Show NULL if a student is not enrolled in any subject.
+
+### SQL Answer
+
+```sql
 SELECT
     s.StudentName,
     sub.SubjectName
@@ -1328,159 +1682,187 @@ LEFT JOIN StudentSubjects ss
     ON s.StudentID = ss.StudentID
 LEFT JOIN Subjects sub
     ON ss.SubjectID = sub.SubjectID;
-Example with Solution
+```
 
-Input:
+### Example
 
-StudentID	StudentName
-1	Rahul
-2	Amit
-3	Priya
+Suppose Rahul is enrolled in DBMS, Priya is enrolled in Java, and Amit is not enrolled in any subject.
 
-StudentSubjects:
+### Solution
 
-StudentID	SubjectID
-1	1
-1	2
-3	3
+The `LEFT JOIN` displays all students. If a student is not enrolled in any subject, the subject name is shown as `NULL`.
 
-Solution: Amit has no subject enrollment, so NULL is displayed.
+### Output
 
-Output:
+| StudentName | SubjectName |
+|---|---|
+| Rahul | DBMS |
+| Priya | Java |
+| Amit | NULL |
 
-StudentName	SubjectName
-Rahul	DBMS
-Rahul	AI
-Amit	NULL
-Priya	Networking
+---
 
-Q42: Write a query to retrieve all employees and their salaries, including those with NULL values. Join the Employees and Salary tables.
-Answer
+## Q42. Display all employees and their salaries, including NULL salary values.
+
+### SQL Answer
+
+```sql
 SELECT
     e.EmployeeName,
     s.SalaryAmount
 FROM Employees e
 LEFT JOIN Salary s
     ON e.EmployeeID = s.EmployeeID;
-Example with Solution
+```
 
-Input:
+### Example
 
-Employees
+Suppose the `Employees` table contains:
 
-EmployeeID	EmployeeName
-101	John Doe
-102	Priya Shah
-103	Rahul Patel
-104	Amit Kumar
+| EmployeeID | EmployeeName |
+|---|---|
+| 1 | Rahul |
+| 2 | Priya |
+| 3 | Amit |
 
-Salary
+And the `Salary` table contains:
 
-EmployeeID	SalaryAmount
-101	55000
-102	70000
-103	60000
+| EmployeeID | SalaryAmount |
+|---|---:|
+| 1 | 50000 |
+| 2 | 60000 |
 
-Solution: Amit Kumar has no salary record, so NULL is displayed.
+### Solution
 
-Output:
+The `LEFT JOIN` displays all employees. If an employee does not have a salary record, the salary value is shown as `NULL`.
 
-EmployeeName	SalaryAmount
-John Doe	55000
-Priya Shah	70000
-Rahul Patel	60000
-Amit Kumar	NULL
+### Output
 
-Q43: Write a query to list all orders and their status, showing NULL for orders without a status. Join the Orders and OrderStatus tables.
-Answer
+| EmployeeName | SalaryAmount |
+|---|---:|
+| Rahul | 50000 |
+| Priya | 60000 |
+| Amit | NULL |
+
+---
+
+## Q43. Display all orders and their status. Show NULL if no status is assigned.
+
+### SQL Answer
+
+```sql
 SELECT
     o.OrderID,
-    os.StatusName
+    s.StatusName
 FROM Orders o
-LEFT JOIN OrderStatus os
-    ON o.Status = os.StatusID;
-Example with Solution
+LEFT JOIN OrderStatus s
+    ON o.StatusID = s.StatusID;
+```
 
-Input:
+### Example
 
-Orders
+Suppose the `Orders` table contains:
 
-OrderID	Status
-1001	1
-1002	2
-1003	NULL
+| OrderID | StatusID |
+|---|---|
+| 101 | 1 |
+| 102 | 2 |
+| 103 | NULL |
 
-OrderStatus
+And the `OrderStatus` table contains:
 
-StatusID	StatusName
-1	Completed
-2	Pending
+| StatusID | StatusName |
+|---|---|
+| 1 | Pending |
+| 2 | Delivered |
 
-Solution: Order 1003 has no status, so NULL is displayed.
+### Solution
 
-Output:
+The `LEFT JOIN` displays all orders. Orders without a matching status display `NULL`.
 
-OrderID	StatusName
-1001	Completed
-1002	Pending
-1003	NULL
+### Output
 
-Q44: Write a query to find all customers and their phone numbers, displaying NULL where phone numbers are not available.
-Answer
+| OrderID | StatusName |
+|---|---|
+| 101 | Pending |
+| 102 | Delivered |
+| 103 | NULL |
+
+---
+
+## Q44. Display all customers and their phone numbers. Show NULL if a phone number is unavailable.
+
+### SQL Answer
+
+```sql
 SELECT
     c.CustomerName,
     c.Phone
 FROM Customers c;
-Example with Solution
+```
 
-Input:
+### Example
 
-CustomerName	Phone
-Rahul	9876543210
-Amit	NULL
-Priya	9123456780
+Suppose the `Customers` table contains:
 
-Solution: Amit's phone number is missing, so NULL is displayed.
+| CustomerID | CustomerName | Phone |
+|---|---|---|
+| 1 | Rahul | 9876543210 |
+| 2 | Priya | NULL |
+| 3 | Amit | 9876512345 |
 
-Output:
+### Solution
 
-CustomerName	Phone
-Rahul	9876543210
-Amit	NULL
-Priya	9123456780
+The query displays all customers and their phone numbers. If a phone number is unavailable, the value is shown as `NULL`.
 
-Q45: Write a query to retrieve all products and their discount information, showing NULL for products without discounts.
-Answer
+### Output
+
+| CustomerName | Phone |
+|---|---|
+| Rahul | 9876543210 |
+| Priya | NULL |
+| Amit | 9876512345 |
+
+---
+
+## Q45. Display all products and discount information. Show NULL if no discount is assigned.
+
+### SQL Answer
+
+```sql
 SELECT
     p.ProductName,
-    d.DiscountPercent
+    d.DiscountPercentage
 FROM Products p
 LEFT JOIN Discounts d
     ON p.ProductID = d.ProductID;
-Example with Solution
+```
 
-Input:
+### Example
 
-Products
+Suppose the `Products` table contains:
 
-ProductID	ProductName
-1	Laptop
-2	Mouse
-3	Chair
-4	Unknown Product
+| ProductID | ProductName |
+|---|---|
+| 1 | Laptop |
+| 2 | Keyboard |
+| 3 | Mouse |
 
-Discounts
+And the `Discounts` table contains:
 
-ProductID	DiscountPercent
-1	10
-3	5
+| ProductID | DiscountPercentage |
+|---|---:|
+| 1 | 10 |
+| 3 | 5 |
 
-Solution: Laptop and Chair have discounts. Mouse and Unknown Product have no discount records.
+### Solution
 
-Output:
+The `LEFT JOIN` displays all products. Products without a discount record display `NULL` in the discount column.
 
-ProductName	DiscountPercent
-Laptop	10
-Mouse	NULL
-Chair	5
-Unknown Product	NULL
+### Output
+
+| ProductName | DiscountPercentage |
+|---|---:|
+| Laptop | 10 |
+| Keyboard | NULL |
+| Mouse | 5 |
