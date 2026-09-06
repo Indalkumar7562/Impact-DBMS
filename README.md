@@ -1,13 +1,15 @@
 1. INNER JOIN
+   
 Q1: Write a query to retrieve the EmployeeName, EmployeeID, and DepartmentName for all employees who belong to a department. Join the Employees table with the Departments table.
 Answer
-SELECT
+
+/*SELECT
     e.EmployeeName,
     e.EmployeeID,
     d.DepartmentName
 FROM Employees e
 INNER JOIN Departments d
-    ON e.DepartmentID = d.DepartmentID;
+    ON e.DepartmentID = d.DepartmentID;*/
 Example with Solution
 
 Input:
