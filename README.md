@@ -25,7 +25,7 @@ To retrieve employee details together with their department names.
 - `INNER JOIN` matches employees and departments using `DepartmentID`.
 - Only employees having a matching department are displayed.
 
-### Example
+###  Example
 
 Suppose the `Employees` table contains:
 
